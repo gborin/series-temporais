@@ -223,7 +223,7 @@ plot(dec)
 #c faz a previsão
 pib12_ts = ts(pib12$pib, frequency =4, start = c(2002,1))
 plot(pib12_ts, 
-     main = "Evolu??o do PIB brasileiro nos ?ltimos 12 anos")
+     main = "Evolução do PIB brasileiro nos últimos 12 anos")
 modelo_pib12 = auto.arima(pib12_ts)
 modelo_pib12
 forecast(modelo_pib12,2)
