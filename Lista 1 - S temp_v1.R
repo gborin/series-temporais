@@ -1,4 +1,4 @@
-install.packages("graphics")
+#install.packages("graphics")
 
 library(tidyverse)
 library(ggplot2)
@@ -8,11 +8,11 @@ library(readxl)
 
 
 # Exercicio 1 -------------------------------------------------------------
-getwd()
-setwd("C:/Users/ipandolfo/OneDrive/P?s Gradua??o/An?lise de S?ries Temporais/_Tarefas/Tarefa 01")
+#getwd()
+#setwd("C:/Users/ipandolfo/OneDrive/P?s Gradua??o/An?lise de S?ries Temporais/_Tarefas/Tarefa 01")
 
 
-#carrega os dados (nao sei pq as tabelas desse prof carregam td cagado pra mim...)
+#carrega os dados (nao sei pq as tabelas desse prof carregam td errado pra mim...)
 
 dados <- read_excel("Serie_Dados.xls", 
                     col_types = c("date", "numeric", "numeric", 
@@ -70,7 +70,7 @@ set.seed(42)
 d<-rnorm(200, 0, 1)
 d_ts <- ts(d)
 plot.ts(d_ts)
-ts.plot(d_ts, main='S?rie D - Aleat?ria ')
+ts.plot(d_ts, main='Série D - Aleatória ')
 abline(h = mean(d_ts), col = "blue") 
 
 plot(diff(d_ts))
@@ -90,7 +90,7 @@ for(i in 2:200){
 }
 e
 e_ts <- ts(e)
-ts.plot(e_ts, main='S?rie E - Tend?ncia Estoc?stica ')
+ts.plot(e_ts, main='Série E - Tendência Estocástica ')
 acf(e)
 pacf(e)
 
@@ -104,7 +104,7 @@ for(i in 2:200){
 }
 f
 f_ts <- ts(f)
-ts.plot(f_ts, main='S?rie F - Correla??es de Curto Prazo')
+ts.plot(f_ts, main='Série F - Correlações de Curto Prazo')
 acf(f)
 pacf(f)
 
@@ -116,17 +116,17 @@ for(i in 2:200){
 }
 g
 g_ts <- ts(g)
-ts.plot(g_ts, main='S?rie G - Correla??es Negativas')
+ts.plot(g_ts, main='Série G - Correlações Negativas')
 acf(g)
 pacf(g)
 
 
 
-#h h)	Medias moveis ??? - faltei na aula que o prof explicou isso e não entendi bem o que fazer aqui 
+#h h)	Medias moveis 
 
 set.seed(42)
 ts.ma <- arima.sim(model=list(ma=0.6), n=200, innov = rnorm(200, 0, 1))
-ts.plot(ts.ma, main='S?rie H - M?dia M?veis')
+ts.plot(ts.ma, main='Série H - Médias Móveis')
 acf(ts.ma)
 pacf(ts.ma)
 
@@ -171,7 +171,7 @@ plot(xa,lty=1, bty='l,', col=1, main='',ylab=expression(paste(Y[t])))
 ya = arima(xa, order = c(1,0,0))
 summary(ya)
 
-#b) Processo AR(1) onde ??0=0, ??1= -0.7
+#b) Processo AR(1) onde θ0=0, θ1= -0.7
 
 xb = arima.sim(model=list(ar=-0.7), n=300)
 acf(xb)
@@ -182,7 +182,7 @@ plot(xb,lty=1, bty='l,', col=1, main='',ylab=expression(paste(Y[t])))
 yb = arima(xb, order = c(1,0,0))
 summary(yb)
 
-#c) Processo AR(2) onde ??0=0, ??1=0.3 e ??2=0.5
+#c) Processo AR(2) onde θ0=0, θ1=0.3 e θ2=0.5
 
 xc = arima.sim(model=list(ar=0.5), n=300)
 acf(xc)
@@ -194,13 +194,13 @@ yc = arima(xc, order = c(2,0,0))
 summary(yc)
 
 
-#d) Processo MA(1) onde ??0=0, ??1=0.6
+#d) Processo MA(1) onde θ0=0, θ1=0.6
 TT <- 300
 am1 = arima.sim(model=list(am=0.6), n=TT)
 plot(am1,main="AM(1) com theta = 0.6")
 
 
-#e) Processo MA(1) onde ??0=0, ??1=-0.6
+#e) Processo MA(1) onde θ0=0, θ1=-0.6
 TT <- 300
 am2 = arima.sim(model=list(am=-0.6), n=TT)
 plot(am2,main="AM(1) com theta = -0.6")
