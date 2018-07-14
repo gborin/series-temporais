@@ -11,9 +11,6 @@ library(readxl)
 #getwd()
 #setwd("C:/Users/ipandolfo/OneDrive/P?s Gradua??o/An?lise de S?ries Temporais/_Tarefas/Tarefa 01")
 
-
-#carrega os dados (nao sei pq as tabelas desse prof carregam td errado pra mim...)
-
 dados <- read_excel("Serie_Dados.xls", 
                     col_types = c("date", "numeric", "numeric", 
                                   "numeric", "numeric", "numeric", 
@@ -77,9 +74,9 @@ plot(diff(d_ts))
 
 acf(diff(d_ts))
 
-acf(d)
+pacf(diff(d_ts))
 
-pacf(d_ts)
+# A série temporal diff(d_ts) é estacionária e podemos fazer diff(d_ts(t))=alfa+beta1*diff(d_ts(t-1))+beta2*diff(d_ts(t-2))+beta3*diff(d_ts(t-3))
 
 #e e)	Série com tendência estocástica, xt = xt-1 + N(1,5^2)
 
@@ -91,9 +88,10 @@ for(i in 2:200){
 e
 e_ts <- ts(e)
 ts.plot(e_ts, main='Série E - Tendência Estocástica ')
-acf(e)
-pacf(e)
+acf(e_ts)
+pacf(e_ts)
 
+# A série temporal e_ts é estacionário e possui apenas uma componente principal, assim e_ts(t)=alfa+beta1*e_ts(t-1)
 
 #f Serie com correlação de curto-prazo
 set.seed(42)
@@ -108,6 +106,8 @@ ts.plot(f_ts, main='Série F - Correlações de Curto Prazo')
 acf(f)
 pacf(f)
 
+# A série temporal f_ts é estacionário e possui apenas uma componente principal, assim f_ts(t)=alfa+beta1*f_ts(t-1)
+
 #g Serie com correlações negativas
 g <- NULL
 g[1] <- rnorm(1)
@@ -120,7 +120,7 @@ ts.plot(g_ts, main='Série G - Correlações Negativas')
 acf(g)
 pacf(g)
 
-
+# Assim como no exemplo anterior, a série temporal g_ts é estacionário e possui apenas uma componente principal, assim g_ts(t)=alfa+beta1*g_ts(t-1)
 
 #h h)	Medias moveis 
 
@@ -130,8 +130,7 @@ ts.plot(ts.ma, main='Série H - Médias Móveis')
 acf(ts.ma)
 pacf(ts.ma)
 
-
-
+#A série temporarl ts.ma é estacionário e pode ser escrita como ts.ma(t)=alfa1*ts.ma(t-1)+alfa2*epsilon(t-1)+epsilon(t)
 
 
 # Exercício 3 -------------------------------------------------------------
@@ -141,10 +140,37 @@ skirts <- read.table("https://robjhyndman.com/tsdldata/roberts/skirts.dat", head
 skirts_ts <- ts(skirts, frequency = 1, start = c(1866))
 plot.ts(skirts_ts)
 
-#b não consegui decompor a série. O problema aqui é a frequência, pois os dados são anuais então deveria ser igual a 1, porém a funçaõ decompose só funciona para frequências maiores ou iguais a 2
+#b Faça a decomposição da série do item (a): Sazonalidade, Tendência e Aleatória.
+skirts_time_series=ts(skirts_ts,frequency = 8)
+decompose_skirts=decompose(skirts_time_series,"additive")
 
-dec <- decompose(skirts_ts)
-plot(dec)
+plot(as.ts(decompose_skirts$seasonal))
+plot(as.ts(decompose_skirts$trend))
+plot(as.ts(decompose_skirts$random))
+plot(decompose_skirts)
+
+# Additive:  Time series = Seasonal + Trend + Random
+
+install.packages("forecast")
+library(forecast)
+trend_skirts_ts = ma(skirts_ts, order = 4, centre = T)
+plot(as.ts(skirts_ts))
+lines(trend_skirts_ts)
+plot(as.ts(trend_skirts_ts))
+
+detrend_skirts_ts = skirts_ts - trend_skirts_ts
+plot(as.ts(detrend_skirts_ts))
+
+m_skirts = t(matrix(data = detrend_skirts_ts, nrow = 8))
+seasonal_skirts = colMeans(m_skirts, na.rm = T)
+plot(as.ts(rep(seasonal_skirts,16)))
+
+random_skirts = skirts_ts - trend_skirts_ts - seasonal_skirts
+plot(as.ts(random_skirts))
+
+recomposed_skirts = trend_skirts_ts+seasonal_skirts+random_skirts
+plot(as.ts(recomposed_skirts))
+plot(as.ts(skirts_ts))
 
 #c
 
@@ -157,7 +183,6 @@ acf(dskirts_ts)
 pacf(dskirts_ts)
 
 
-# Exercício 4 -------------------------------------------------------------
 # Exercicio 4 -------------------------------------------------------------
 
 #a) Processo AR(1) onde ??0=0, ??1=0.7
