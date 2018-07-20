@@ -140,6 +140,9 @@ skirts <- read.table("https://robjhyndman.com/tsdldata/roberts/skirts.dat", head
 skirts_ts <- ts(skirts, frequency = 1, start = c(1866))
 plot.ts(skirts_ts)
 
+
+#depois de ler mais sobre o assunto, creio que a série não possui sazonalidade, logo não é possível usar a abordagem abaixo com o decompose e etc... podemos discutir melhor durante a aula 
+
 #b Faça a decomposição da série do item (a): Sazonalidade, Tendência e Aleatória.
 skirts_time_series=ts(skirts_ts,frequency = 8)
 decompose_skirts=decompose(skirts_time_series,"additive")
@@ -185,7 +188,7 @@ pacf(dskirts_ts)
 
 # Exercicio 4 -------------------------------------------------------------
 
-#a) Processo AR(1) onde ??0=0, ??1=0.7
+#a) Processo AR(1) onde θ0=0, θ1=0.7
 
 xa = arima.sim(model=list(ar=0.7), n=300)
 acf(xa)
